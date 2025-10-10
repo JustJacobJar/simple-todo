@@ -1,15 +1,13 @@
 /** @format */
 
 :root {
-  background-image: linear-gradient(to bottom right, lightgray, grey);
   height: 100%;
   background-repeat: no-repeat;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 
-  --field: 0.1rem; /* Input fields */
-  --selector: 0.5rem; /* Buttons and stuff*/
-  --box: 0.5rem; /* Containers and cards */
+  color: var(--color-base-content);
+  transition: all 300ms;
 }
 
 .border {
@@ -19,27 +17,59 @@
 .list-container {
   display: flex;
   flex-direction: column;
+  justify-self: center;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: var(--radius-box);
+  /* background-color: var(--color-base-100); */
+  box-shadow: 0 0 16px var(--color-base-200);
+  padding: 1rem;
+  gap: 1rem;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  gap: 0.5rem;
+}
+
+.list-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .list-item {
+  display: flex;
+  align-items: center;
+}
+
+.list-item::before {
+  content: "#";
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-accent);
+  padding: 0 1rem;
 }
 
 body {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 0.1fr 1fr;
   grid-template-areas: "sidebar main";
   width: 100%;
   height: 100%;
+  transition: 300ms ease-in-out;
 }
 
 main {
+  width: 100%;
+  padding: 4rem 2rem;
   grid-area: main;
+  background-image: linear-gradient(
+    to bottom right,
+    var(--color-base-100),
+    var(--color-base-200)
+  );
 }
 
 aside {
@@ -48,16 +78,35 @@ aside {
   display: flex;
   flex-direction: column;
   padding: 0.75rem;
+  gap: 1rem;
+  background-color: var(--color-base-200);
+  transition: 300ms ease-out;
 }
+
+@media screen and (max-width: 600px) {
+  aside {
+    opacity: 0;
+    /* visibility: hidden; */
+    width: 0px;
+  }
+
+  body {
+    grid-template-columns: 0px 1fr;
+  }
+}
+
 .sidebar-head {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  padding-inline: 1rem;
+  padding-inline: 0.5rem;
 }
 
 .sidebar-list {
   /* background-color: aqua; */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .sidebar-title {
@@ -72,5 +121,15 @@ aside {
   height: 3rem;
   text-align: left;
   padding: 0.5rem;
-  border-radius: var(--selector);
+  border-radius: var(--radius-field);
+  background-color: var(--color-base-300);
+  color: var(--color-neutral-content);
+}
+
+.list-input {
+  border: none;
+  border-radius: var(--radius-field);
+  background-color: var(--color-base-200);
+  padding: 0.5rem;
+  margin: 0 2.5rem;
 }
