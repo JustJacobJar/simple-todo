@@ -1,0 +1,76 @@
+/** @format */
+
+:root {
+  background-image: linear-gradient(to bottom right, lightgray, grey);
+  height: 100%;
+  background-repeat: no-repeat;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+
+  --field: 0.1rem; /* Input fields */
+  --selector: 0.5rem; /* Buttons and stuff*/
+  --box: 0.5rem; /* Containers and cards */
+}
+
+.border {
+  outline: 1px solid black;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.list-item {
+}
+
+body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "sidebar main";
+  width: 100%;
+  height: 100%;
+}
+
+main {
+  grid-area: main;
+}
+
+aside {
+  grid-area: sidebar;
+  width: 18.75rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+}
+.sidebar-head {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding-inline: 1rem;
+}
+
+.sidebar-list {
+  /* background-color: aqua; */
+}
+
+.sidebar-title {
+  font-size: 1.5rem;
+}
+.title {
+  font-size: 1.5rem;
+}
+
+.list-button {
+  width: 100%;
+  height: 3rem;
+  text-align: left;
+  padding: 0.5rem;
+  border-radius: var(--selector);
+}
