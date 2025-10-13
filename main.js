@@ -12,7 +12,8 @@ inputNodeHTML.className = "list-input";
 inputNodeHTML.name = "input";
 inputNodeHTML.addEventListener("blur", (e) => inputBlur(e));
 
-LoadFromLocal();  //run on page load
+// localStorage.clear()
+LoadFromLocal(); //run on page load
 
 function SaveToLocal() {
   window.localStorage.setItem("todos", JSON.stringify(todoData));
@@ -21,9 +22,11 @@ function SaveToLocal() {
 
 function LoadFromLocal() {
   const data = JSON.parse(window.localStorage.getItem("todos"));
-  const merged = todoData.concat(data);
-  todoData = [...merged];
-  const id = window.localStorage.getItem("todosCount");
+  if (data) {
+    const merged = todoData.concat(data);
+    todoData = merged;
+  }
+  id = window.localStorage.getItem("todosCount") ?? 0;
   generateSidebarListBtns(todoData); //run on load?
 }
 
@@ -33,6 +36,7 @@ function LoadFromLocal() {
  * @param {{id:string, title:string, data:string[]}} lists
  */
 function generateSidebarListBtns(lists) {
+  if (lists.length == 0) return;
   sidebarListNode.innerHTML = "";
   for (li of lists) {
     const liNode = document.createElement("li");
@@ -52,6 +56,7 @@ function generateSidebarListBtns(lists) {
  * @param {PointerEvent} event
  */
 function selectList(event) {
+  if (event.target.tagName == "UL") return;
   listId = event.target.name;
   if (mainNode.name == listId) return; //prevent refreshing the list when the active list button is pressed again
   mainNode.name = listId; //set main list name to list index
@@ -74,14 +79,14 @@ function createList() {
   const liNode = document.createElement("li");
   const liBtn = document.createElement("button");
   liBtn.className = "list-button";
-  liBtn.innerText = "Todo Name";
+  liBtn.innerText = `Todo ${id}`;
   liBtn.name = id;
   liNode.appendChild(liBtn);
   sidebarListNode.appendChild(liNode);
 
   todoData.push({
     id: id,
-    title: "Todo Name",
+    title: `Todo ${id}`,
     data: [],
   });
 
