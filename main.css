@@ -21,8 +21,8 @@
   width: 100%;
   max-width: 1200px;
   border-radius: var(--radius-box);
-  /* background-color: var(--color-base-100); */
-  box-shadow: 0 0 16px var(--color-base-200);
+  background-color: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 16px var(--color-base-300);
   padding: 1rem;
   gap: 1rem;
 }
@@ -37,6 +37,8 @@
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
+  align-self: center;
+  background-color: transparent;
 }
 
 .list-item {
@@ -67,8 +69,10 @@ main {
   grid-area: main;
   background-image: linear-gradient(
     to bottom right,
-    var(--color-base-100),
-    var(--color-base-200)
+    #9e6cdf9c,
+    #e7aa64bb
+    /* #f45b237e, */
+    /* #f3de8a7e */
   );
 }
 
