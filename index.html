@@ -22,7 +22,10 @@
       <!-- Util list -->
       <ul class="sidebar-list">
         <li>
-          <button class="list-button" style="background-color: var(--color-success)">
+          <button
+            class="list-button"
+            style="background-color: var(--color-success)"
+            onclick="createList()">
             Create
           </button>
         </li>
@@ -35,18 +38,18 @@
       </ul>
       <!-- List of list buttons -->
       <h2 class="sidebar-title sidebar-head">My Lists</h2>
-      <ul id="sidebarList" class="sidebar-list">
-      </ul>
+      <ul id="sidebarList" class="sidebar-list"></ul>
     </aside>
 
     <!-- Selected List -->
     <main>
+      <!-- Create some sort of landing page, get started, create a list... -->
       <div class="list-container">
         <h2 class="list-header">List header</h2>
         <ul class="list">
           <li class="list-item">da list</li>
           <li class="list-item">da list</li>
-          <input placeholder="Start typing..." class="list-input"/>
+          <input placeholder="Start typing..." class="list-input" />
         </ul>
       </div>
     </main>

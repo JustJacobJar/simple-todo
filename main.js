@@ -1,7 +1,7 @@
 /** @format */
-
-// const testdata = [];
-const testdata = [{ id: 1, title: "Gaming", data: ["A", "B", "C"] }];
+let id = 0;
+let todoData = [];
+// let todoData = [{ id: 1, title: "Gaming", data: ["A", "B", "C"] }];
 const mainNode = document.getElementsByTagName("main").item(0);
 const sidebarListNode = document.getElementById("sidebarList"); //sidebar Ul
 sidebarListNode.addEventListener("click", (e) => selectList(e));
@@ -12,9 +12,20 @@ inputNodeHTML.className = "list-input";
 inputNodeHTML.name = "input";
 inputNodeHTML.addEventListener("blur", (e) => inputBlur(e));
 
-//testing, should be ran on button click when you create list or switch to list
+LoadFromLocal();  //run on page load
 
-generateSidebarListBtns(testdata); //run on load?
+function SaveToLocal() {
+  window.localStorage.setItem("todos", JSON.stringify(todoData));
+  window.localStorage.setItem("todosCount", id);
+}
+
+function LoadFromLocal() {
+  const data = JSON.parse(window.localStorage.getItem("todos"));
+  const merged = todoData.concat(data);
+  todoData = [...merged];
+  const id = window.localStorage.getItem("todosCount");
+  generateSidebarListBtns(todoData); //run on load?
+}
 
 /**
  * @summary
@@ -22,6 +33,7 @@ generateSidebarListBtns(testdata); //run on load?
  * @param {{id:string, title:string, data:string[]}} lists
  */
 function generateSidebarListBtns(lists) {
+  sidebarListNode.innerHTML = "";
   for (li of lists) {
     const liNode = document.createElement("li");
     const liBtn = document.createElement("button");
@@ -44,17 +56,49 @@ function selectList(event) {
   if (mainNode.name == listId) return; //prevent refreshing the list when the active list button is pressed again
   mainNode.name = listId; //set main list name to list index
   mainNode.replaceChildren(
-    createListHtml(testdata.find((e) => e.id == listId))
+    CreateListView(todoData.find((e) => e.id == listId))
   );
+}
+
+/**
+ * @summary
+ * Runs when the create list button is clicked.
+ * Creates a new list entry in todoData, as well as a matching button.
+ * Sets the current viewed list to newly created list
+ */
+function createList() {
+  //maks sure id is unique
+
+  const thisId = id;
+  //create the button
+  const liNode = document.createElement("li");
+  const liBtn = document.createElement("button");
+  liBtn.className = "list-button";
+  liBtn.innerText = "Todo Name";
+  liBtn.name = id;
+  liNode.appendChild(liBtn);
+  sidebarListNode.appendChild(liNode);
+
+  todoData.push({
+    id: id,
+    title: "Todo Name",
+    data: [],
+  });
+
+  id++; //next list id will be one above. make sure to save this value for load in local storage.
+  mainNode.replaceChildren(
+    CreateListView(todoData.find((e) => e.id == thisId))
+  );
+  SaveToLocal();
 }
 
 /** @summary
  * Creates a HTML element for the main list display.
  * Runs when a list is selected in the sidebar
- * @param {} List object
+ * @param {{id:number, title:string, data:string[]}} list
  * @returns HTML element containing the list
  */
-function createListHtml(list) {
+function CreateListView(list) {
   const { id, title, data } = list;
   const container = document.createElement("div");
   container.className = "list-container";
@@ -86,10 +130,19 @@ function createListHtml(list) {
   return container;
 }
 
+/**
+ * @summary
+ * Runs when the title is unfocused.
+ * Sets the title of the list to the input value (cant be empty)
+ * @param {FocusEvent} event
+ */
 function SetTitle(event) {
   const listId = event.target.closest("div").name;
-  const dataObj = testdata.find((e) => e.id == listId);
-  if (event.target.value.trim() == "")
+  const dataObj = todoData.find((e) => e.id == listId);
+  if (
+    event.target.value.trim() == "" ||
+    event.target.value.trim() == dataObj.title
+  )
     return (event.target.value = dataObj.title); //cant be set to nothing
   dataObj.title = event.target.value;
   const btns = sidebarListNode.children;
@@ -98,6 +151,7 @@ function SetTitle(event) {
       el.children.item(0).innerText = event.target.value;
     }
   }
+  SaveToLocal();
 }
 
 /**
@@ -112,12 +166,13 @@ function inputBlur(event) {
   if (!input) return (event.target.value = "");
   //add to data array of this list
   const id = event.target.closest("ul").name;
-  testdata.find((e) => e.id == id).data.push(event.target.value);
+  todoData.find((e) => e.id == id).data.push(event.target.value);
 
   //Input into HTML of current list displayed
   const node = createLi(event.target.value);
   event.target.parentNode.insertBefore(node, event.target);
   event.target.value = "";
+  SaveToLocal();
 }
 
 //Creates and styles Li with the innerText = text. Li for the main lists
@@ -146,7 +201,7 @@ function EditLi(event) {
   index = ulChildren.indexOf(liNode); //index of the input, should be the same as the data pos in array
 
   if (inputNode.value.trim() == "") {
-    const listData = testdata
+    const listData = todoData
       .find((d) => d.id == ulNode.name)
       .data.splice(index, 1);
     ulNode.removeChild(liNode);
@@ -154,5 +209,6 @@ function EditLi(event) {
   }
 
   //set value in data array
-  testdata.find((d) => d.id == ulNode.name).data[index] = inputNode.value;
+  todoData.find((d) => d.id == ulNode.name).data[index] = inputNode.value;
+  SaveToLocal();
 }
