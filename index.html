@@ -30,10 +30,12 @@
           </button>
         </li>
         <li>
-          <button class="list-button">idk yet</button>
-        </li>
-        <li>
-          <button class="list-button">some other button</button>
+          <button
+            onclick="clearData()"
+            style="background-color: var(--color-error)"
+            class="list-button">
+            Clear Data!
+          </button>
         </li>
       </ul>
       <!-- List of list buttons -->
@@ -45,11 +47,12 @@
     <main>
       <!-- Create some sort of landing page, get started, create a list... -->
       <div class="list-container">
-        <h2 class="list-header">List header</h2>
+        <h2 class="list-header"><- Create a list</h2>
         <ul class="list">
-          <li class="list-item">da list</li>
-          <li class="list-item">da list</li>
-          <input placeholder="Start typing..." class="list-input" />
+          <li class="list-item">This is a demo list</li>
+          <li class="list-item">You can click to edit!</li>
+          <li class="list-item">Clear the text to remove an item!</li>
+          <input placeholder="Start typing to add an item..." class="list-input" />
         </ul>
       </div>
     </main>

@@ -15,6 +15,11 @@ inputNodeHTML.addEventListener("blur", (e) => inputBlur(e));
 // localStorage.clear()
 LoadFromLocal(); //run on page load
 
+function clearData() {
+  localStorage.clear();
+  window.location.reload()
+}
+
 function SaveToLocal() {
   window.localStorage.setItem("todos", JSON.stringify(todoData));
   window.localStorage.setItem("todosCount", id);
@@ -31,7 +36,6 @@ function LoadFromLocal() {
 }
 
 /**
- * @summary
  * Runs on start to generate the buttons to access each list
  * @param {{id:string, title:string, data:string[]}} lists
  */
@@ -50,7 +54,6 @@ function generateSidebarListBtns(lists) {
 }
 
 /**
- * @summary
  * Changes the current list dispalyed within <main>
  * Runs when a List Selector Button is pressed in the <aside>
  * @param {PointerEvent} event
@@ -66,7 +69,6 @@ function selectList(event) {
 }
 
 /**
- * @summary
  * Runs when the create list button is clicked.
  * Creates a new list entry in todoData, as well as a matching button.
  * Sets the current viewed list to newly created list
@@ -97,7 +99,7 @@ function createList() {
   SaveToLocal();
 }
 
-/** @summary
+/**
  * Creates a HTML element for the main list display.
  * Runs when a list is selected in the sidebar
  * @param {{id:number, title:string, data:string[]}} list
@@ -125,6 +127,7 @@ function CreateListView(list) {
     liNode.className = "list-item";
     const liInNode = document.createElement("input");
     liInNode.value = li;
+    liInNode.className = "list-item-input";
     liNode.appendChild(liInNode);
     ulNode.appendChild(liNode);
   }
@@ -136,7 +139,6 @@ function CreateListView(list) {
 }
 
 /**
- * @summary
  * Runs when the title is unfocused.
  * Sets the title of the list to the input value (cant be empty)
  * @param {FocusEvent} event
@@ -160,7 +162,6 @@ function SetTitle(event) {
 }
 
 /**
- * @summary
  * Runs when the main list input is blurred.
  * Inserts the text value into a new li before the input element.
  * Also adds it to the array storing list data
@@ -191,7 +192,6 @@ createLi = (text) => {
 };
 
 /**
- * @summary
  * Changes the value of the edited li and saves the data.
  * Runs when a li is unfocused
  * @param {FocusEvent} event
@@ -203,7 +203,7 @@ function EditLi(event) {
   const ulNode = inputNode.closest("ul"); //parent list
   const liNode = inputNode.closest("li"); //parent li
   const ulChildren = Array.from(ulNode.children); //all Lis in Ul
-  index = ulChildren.indexOf(liNode); //index of the input, should be the same as the data pos in array
+  const index = ulChildren.indexOf(liNode); //index of the input, should be the same as the data pos in array
 
   if (inputNode.value.trim() == "") {
     const listData = todoData
